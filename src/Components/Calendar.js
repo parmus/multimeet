@@ -6,8 +6,9 @@ import { ManualJoin } from './ManualJoin';
 const teamsLinkRegExp = new RegExp('https://teams.microsoft.com/l/meetup-join/[^>]+')
 
 const processItem = item => {
-  item.start = new Date(item.start.dateTime)
-  item.end = new Date(item.end.dateTime)
+  item.allDay = item.start.date !== undefined
+  item.start = new Date(item.start.dateTime || item.start.date)
+  item.end = new Date(item.end.dateTime || item.end.date)
 
   if (item.description) {
     const linkMatch = item.description.match(teamsLinkRegExp)
@@ -15,6 +16,8 @@ const processItem = item => {
       item.teamsLink = linkMatch[0]
     }
   }
+
+  item.responseStatus = item.attendees.reduce((responseStatus, attendee) => attendee.self ? attendee.responseStatus : responseStatus)
 
   return item
 }
@@ -69,7 +72,6 @@ export function Calendar({ gapi, refreshRate = 60, calendarId, openTeamInBrowser
         console.error(response.result);
       }
     }
-
     refresh()
     timerID.current = setInterval(refresh, refreshRate * 1000)
 

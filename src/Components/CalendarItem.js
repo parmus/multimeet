@@ -7,12 +7,10 @@ import { GoogleMeetButton } from "./GoogleMeetButton"
 import { MicrosoftTeamsButton } from "./MicrosoftTeamsButton"
 
 
-const formatTime = datetime => {
-  return datetime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
-}
+const formatTime = datetime => datetime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
 
 
-export const CalendarItem = ({ now, start, end, summary, hangoutLink, teamsLink, openTeamInBrowser }) => {
+export const CalendarItem = ({ now, start, end, allDay, responseStatus, summary, hangoutLink, teamsLink, openTeamInBrowser }) => {
   const cls = now < start ? 'future' : (now < end ? 'ongoing' : 'past')
 
   const sx = {}
@@ -21,16 +19,22 @@ export const CalendarItem = ({ now, start, end, summary, hangoutLink, teamsLink,
     sx.opacity = "0.3"
   }
 
+  if (responseStatus === 'declined') {
+    sx.textDecoration = 'line-through'
+  }
+
+  const duration = allDay ? (<i>All day</i>) : `${formatTime(start)} - ${formatTime(end)}`
+
   return (
-    <Card sx={ sx } raised={cls === 'ongoing'}>
+    <Card sx={ sx } raised={!allDay && cls === 'ongoing'}>
       <CardContent>
         <Typography variant="h5" component="div">
           {summary}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {formatTime(start)}-{formatTime(end)}
+          {duration}
         </Typography>
-        { cls === 'ongoing' && (
+        { cls === 'ongoing' && !allDay && (
           <LinearProgress variant="determinate" value={((now-start) / (end-start)) * 100} />
         )}
       </CardContent>
