@@ -7,10 +7,27 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { CalendarPage } from './Pages/CalendarPage';
 import { LoginPage } from './Pages/LoginPage';
 import { SettingsPage } from './Pages/SettingsPage';
+import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage';
+
+
+const RequireAuth = ({ isSignedIn, children }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isSignedIn) navigate('/login')
+  }, [isSignedIn, navigate])
+
+  if (!isSignedIn) return null
+  
+  return (
+    <>
+      {children}
+    </>
+  )
+}
 
 
 export const App = () => {
-  const navigate = useNavigate();
   const gapi = useGoogleApi({
     discoveryDocs: discoveryDocs,
     scopes: scopes,
@@ -26,7 +43,6 @@ export const App = () => {
     if (!gapi) return;
     if (!isSignedIn) {
       setTitle('')
-      navigate('/login')
       return
     }
     if (!calendarId) return
@@ -42,16 +58,15 @@ export const App = () => {
         console.log(error);
       }
     })();
-  }, [gapi, calendarId, setTitle, isSignedIn, navigate])
+  }, [gapi, calendarId, setTitle, isSignedIn])
 
   if (!auth) return null;
 
   return (
     <Routes>
       <Route path="login" element={<LoginPage auth={auth}/>}/>
-      {isSignedIn && (
-        <>
-        <Route index element={
+      <Route index element={
+        <RequireAuth isSignedIn={isSignedIn}>
           <CalendarPage
             gapi={gapi}
             auth={auth}
@@ -59,8 +74,10 @@ export const App = () => {
             calendarId={calendarId}
             openTeamInBrowser={openTeamInBrowser}
           />
-        }/>
-        <Route path="settings" element={
+        </RequireAuth>
+      }/>
+      <Route path="settings" element={
+        <RequireAuth isSignedIn={isSignedIn}>
           <SettingsPage
             gapi={gapi}
             openTeamInBrowser={openTeamInBrowser}
@@ -68,9 +85,9 @@ export const App = () => {
             calendarId={calendarId}
             setCalendarId={setCalendarId}
           />
-        }/>
-        </>
-      )}
+        </RequireAuth>
+      }/>
+      <Route path="privacy" element={<PrivacyPolicyPage/>}/>
     </Routes>
   );
 }

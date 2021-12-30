@@ -1,9 +1,9 @@
 import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Avatar, ListItemIcon, Divider } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import { useNavigate } from 'react-router-dom';
-
+import PrivacyTipOutlinedIcon from '@mui/icons-material/PrivacyTipOutlined';
 
 export const HeaderBar = ({ auth, title="" }) => {
   const navigate = useNavigate();
@@ -49,6 +49,13 @@ export const HeaderBar = ({ auth, title="" }) => {
                   <Settings fontSize="small" />
                 </ListItemIcon>
                 Settings
+              </MenuItem>
+              <Divider/>
+              <MenuItem onClick={() => navigate('/privacy')}>
+                <ListItemIcon>
+                  <PrivacyTipOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                Privacy Policy
               </MenuItem>
               <Divider/>
               <MenuItem onClick={logout}>
