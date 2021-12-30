@@ -6,7 +6,7 @@ import { GoogleApiProvider } from 'react-gapi'
 import { clientId } from './settings';
 import { CssBaseline, GlobalStyles, ThemeProvider } from '@mui/material';
 import { theme, globalCss } from "./theme"
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 
 ReactDOM.render(
@@ -15,9 +15,9 @@ ReactDOM.render(
     <GlobalStyles styles={globalCss}/>
     <ThemeProvider theme={theme}>
       <GoogleApiProvider clientId={clientId}>
-        <BrowserRouter>
+        <HashRouter>
           <App />
-        </BrowserRouter>
+        </HashRouter>
       </GoogleApiProvider>
     </ThemeProvider>
   </React.StrictMode>,
