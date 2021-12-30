@@ -1,22 +1,24 @@
-import { Calendar } from './Components/Calendar';
-import { HeaderBar } from './Components/HeaderBar';
 import { discoveryDocs, scopes } from './settings'
 import { useGoogleApi } from 'react-gapi'
 import { useEffect, useState } from 'react';
-import { SettingsDialog } from './SettingsDialog';
-import { useLocalStorage } from './utils';
+import { useLocalStorage, useLocalStorageBool } from './utils';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
+import { CalendarPage } from './Pages/CalendarPage';
+import { LoginPage } from './Pages/LoginPage';
+import { SettingsPage } from './Pages/SettingsPage';
 
 
 export const App = () => {
+  const navigate = useNavigate();
   const gapi = useGoogleApi({
     discoveryDocs: discoveryDocs,
     scopes: scopes,
   })
 
-  const [open, setOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [calendarId, setCalendarId] = useLocalStorage('calendarId', 'primary')
-  const [openTeamInBrowser, setOpenTeamInBrowser] = useLocalStorage('openTeamInBrowser', '1')
+  const [openTeamInBrowser, setOpenTeamInBrowser] = useLocalStorageBool('openTeamInBrowser', true)
   const auth = gapi?.auth2.getAuthInstance()
   const isSignedIn = auth?.isSignedIn.get()
 
@@ -24,6 +26,7 @@ export const App = () => {
     if (!gapi) return;
     if (!isSignedIn) {
       setTitle('')
+      navigate('/login')
       return
     }
     if (!calendarId) return
@@ -39,16 +42,36 @@ export const App = () => {
         console.log(error);
       }
     })();
-  }, [gapi, calendarId, setTitle, isSignedIn])
+  }, [gapi, calendarId, setTitle, isSignedIn, navigate])
 
-  if (!auth) return null
+  if (!auth) return null;
 
   return (
-    <>
-      { isSignedIn && (<SettingsDialog gapi={gapi} open={open} setOpen={setOpen} setCalendarId={setCalendarId}/>) }
-      <HeaderBar auth={auth} openSettings={() => setOpen(true)} title={title}/>
-      { isSignedIn && (<Calendar gapi={gapi} calendarId={calendarId} openTeamInBrowser={openTeamInBrowser !== '0'}/>) }
-    </>
+    <Routes>
+      <Route path="login" element={<LoginPage auth={auth}/>}/>
+      {isSignedIn && (
+        <>
+        <Route index element={
+          <CalendarPage
+            gapi={gapi}
+            auth={auth}
+            title={title}
+            calendarId={calendarId}
+            openTeamInBrowser={openTeamInBrowser}
+          />
+        }/>
+        <Route path="settings" element={
+          <SettingsPage
+            gapi={gapi}
+            openTeamInBrowser={openTeamInBrowser}
+            setOpenTeamInBrowser={setOpenTeamInBrowser}
+            calendarId={calendarId}
+            setCalendarId={setCalendarId}
+          />
+        }/>
+        </>
+      )}
+    </Routes>
   );
 }
 

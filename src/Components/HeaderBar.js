@@ -1,12 +1,13 @@
-import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Avatar, Button, ListItemIcon, Divider } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Avatar, ListItemIcon, Divider } from '@mui/material';
 import { useState } from 'react';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
 
 
-export const HeaderBar = ({ title="", auth, openSettings }) => {
+export const HeaderBar = ({ auth, title="" }) => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null)
-  const loggedIn = auth.isSignedIn.get();
   const handleClose = () => setAnchorEl(null);
 
   const logout = () => {
@@ -17,7 +18,6 @@ export const HeaderBar = ({ title="", auth, openSettings }) => {
   return (
     <AppBar position="sticky">
       <Toolbar>
-        {loggedIn ? (
           <div>
             <IconButton
               size="large"
@@ -44,7 +44,7 @@ export const HeaderBar = ({ title="", auth, openSettings }) => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={() => {openSettings(); handleClose();}}>
+              <MenuItem onClick={() => navigate('/settings')}>
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>
@@ -59,9 +59,6 @@ export const HeaderBar = ({ title="", auth, openSettings }) => {
               </MenuItem>
             </Menu>
           </div>
-        ) : (
-          <Button onClick={() => auth.signIn()}color="inherit">Login</Button>
-        )}
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {title}
         </Typography>

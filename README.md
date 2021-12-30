@@ -4,13 +4,13 @@ _(TBD)_
 
 ## TODO
 - [X] Deploy on Github pages
-- [ ] Handle all-day events
-- [ ] Setting for opening Team for web
+- [X] Handle all-day events
+- [X] Setting for opening Team for web
 - [ ] Show event creator / calendar
 - [ ] Show description?
 - [ ] Scroll to current
-- [ ] RSVP: No
-- [ ] Better configuration page
+- [X] RSVP: No
+- [X] Better configuration page
 - [ ] Documentation
 
 ## External resources
