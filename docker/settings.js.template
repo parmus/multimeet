@@ -1,0 +1,1 @@
+window.clientId = "${REACT_APP_CLIENTID}";
