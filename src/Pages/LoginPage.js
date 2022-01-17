@@ -1,6 +1,9 @@
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from 'react';
+import GoogleSignInButtonNormal from '../Icons/google_signin_buttons/2x/btn_google_signin_dark_normal_web@2x.png';
+import GoogleSignInButtonFocus from '../Icons/google_signin_buttons/2x/btn_google_signin_dark_focus_web@2x.png';
+import GoogleSignInButtonPressed from '../Icons/google_signin_buttons/2x/btn_google_signin_dark_pressed_web@2x.png';
 
 export const LoginPage = ({ auth }) => {
   const navigate = useNavigate();
@@ -12,6 +15,19 @@ export const LoginPage = ({ auth }) => {
 
   if (loggedIn) return null
 
+  const style = {
+    backgroundImage: `url(${GoogleSignInButtonNormal})`,
+    width: 382,
+    height: 92,
+    margin: 0,
+    '&:hover': {
+      backgroundImage: `url(${GoogleSignInButtonFocus})`,
+    },
+    '&:active': {
+      backgroundImage: `url(${GoogleSignInButtonPressed})`,
+    },
+  }
+
   return (
     <Grid
       container
@@ -22,9 +38,7 @@ export const LoginPage = ({ auth }) => {
       style={{ minHeight: '100vh' }}
     >
       <Typography variant="h1">MultiMeet</Typography>
-      <Button onClick={() => auth.signIn()} color="inherit">
-        Login
-      </Button>
+      <Button onClick={() => auth.signIn()} color="inherit" sx={style}/>
       <Box>
         <Link to='/privacy'>Privacy Policy</Link>
       </Box>
