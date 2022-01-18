@@ -1,12 +1,15 @@
-import { useState, forwardRef } from "react"
+import { useState, useContext, forwardRef } from "react"
 import { Card, Collapse } from "@mui/material"
 import { CardContent } from "@mui/material"
 import { CardActions } from "@mui/material"
+import { CardHeader } from "@mui/material"
 import { Typography } from "@mui/material"
 import { LinearProgress } from "@mui/material"
 import { GoogleMeetButton } from "./GoogleMeetButton"
 import { MicrosoftTeamsButton } from "./MicrosoftTeamsButton"
 import { ExpandMoreButton } from "./ExpandMoreButton"
+import { SettingsContext } from "../settingsContext"
+
 
 const formatTime = datetime => datetime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
 
@@ -26,6 +29,7 @@ export const CalendarItem = forwardRef(({
   }
 }, ref) => {
   const [expanded, setExpanded] = useState(false)
+  const settings = useContext(SettingsContext)
 
   const cls = now < start ? 'future' : (now < end ? 'ongoing' : 'past')
 
@@ -39,22 +43,33 @@ export const CalendarItem = forwardRef(({
     sx.textDecoration = 'line-through'
   }
 
+  if (settings.renderLinksInDescription && description) {
+     description = description
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/(http[s]?:\/\/\S+)/g, '<a href="$1" target="_blank" rel="noreferrer">$1</a>')
+  }
+
   const duration = allDay ? (<i>All day</i>) : `${formatTime(start)} - ${formatTime(end)}`
 
   return (
     <Card ref={ref} sx={ sx } raised={!allDay && cls === 'ongoing'}>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          {summary}
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {duration}
-        </Typography>
+      <CardHeader
+        title={summary}
+        subheader={duration}
+        action={description && (<ExpandMoreButton expanded={expanded} setExpanded={setExpanded}/>)}
+      />
+      <CardContent sx={{ mb: 1.5 }}>
         { description && (
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <Typography sx={{ mb: 1.5 }}>
-              {description}
-            </Typography>
+            { settings.renderLinksInDescription ? (
+              <Typography
+              sx={{ whiteSpace: "pre" }}
+              dangerouslySetInnerHTML={{__html: description}}
+              />
+            ) : (
+              <Typography sx={{ whiteSpace: "pre" }}>{description}</Typography>
+            )}
           </Collapse>
         )}
         { cls === 'ongoing' && !allDay && (
@@ -66,7 +81,6 @@ export const CalendarItem = forwardRef(({
         {hangoutLink && (<GoogleMeetButton href={hangoutLink}/>)}
         {teamsLink && (<MicrosoftTeamsButton openInBrowser={openTeamInBrowser} href={teamsLink}/>)}
       </div>
-      {description && (<ExpandMoreButton expanded={expanded} setExpanded={setExpanded}/>)}
       </CardActions>
     </Card>
   )

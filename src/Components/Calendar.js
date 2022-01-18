@@ -12,6 +12,7 @@ const processItem = item => {
   item.end = new Date(item.end.dateTime || item.end.date)
 
   if (item.description) {
+    item.description = item.description.trim()
     const linkMatch = item.description.match(teamsLinkRegExp)
     if (linkMatch) {
       item.teamsLink = linkMatch[0]

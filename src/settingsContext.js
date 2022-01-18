@@ -7,11 +7,14 @@ export const SettingsContext = createContext({
     setCalendarId: calendarId => {},
     openTeamInBrowser: true,
     setOpenTeamInBrowser: openTeamInBrowser => {},
+    renderLinksInDescription: true,
+    setRenderLinksInDescription: renderLinksInDescription => {},
 })
 
 export const SettingsContextProvider = ({children}) => {
     const [calendarId, setCalendarId] = useLocalStorage('calendarId', 'primary')
     const [openTeamInBrowser, setOpenTeamInBrowser] = useLocalStorageBool('openTeamInBrowser', true)
+    const [renderLinksInDescription, setRenderLinksInDescription] = useLocalStorageBool('renderLinksInDescription', true)
     
     return (
         <SettingsContext.Provider value={{
@@ -19,6 +22,8 @@ export const SettingsContextProvider = ({children}) => {
             setCalendarId: setCalendarId,
             openTeamInBrowser: openTeamInBrowser,
             setOpenTeamInBrowser: setOpenTeamInBrowser,
+            renderLinksInDescription: renderLinksInDescription,
+            setRenderLinksInDescription: setRenderLinksInDescription,
         }}>
             {children}
         </SettingsContext.Provider>

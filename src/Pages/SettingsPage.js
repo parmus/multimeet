@@ -1,10 +1,25 @@
 import { useEffect, useState, useContext } from 'react';
-import { Alert, FormControlLabel, FormGroup, List, ListItemButton, ListItemText, Switch } from '@mui/material';
+import { Alert, FormControlLabel, FormGroup, List, ListItemButton, ListItemText, Paper, Switch } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import { SettingsContext } from '../settingsContext';
 
 import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
+
+
+const BooleanSwitch = ({ label, checked, setChecked }) => (
+  <FormGroup>
+    <FormControlLabel
+      label={label}
+      control={
+        <Switch
+          checked={checked}
+          onChange={event => setChecked(event.target.checked)}
+        />
+      }
+    />
+  </FormGroup>
+)
 
 
 export const SettingsPage = ({ gapi }) => {
@@ -52,32 +67,32 @@ export const SettingsPage = ({ gapi }) => {
         </Typography>        
         </Toolbar>
       </AppBar>
-
-      <FormGroup>
-        <FormControlLabel
-          label="Open Microsoft Teams meetings in browser"
-          control={
-            <Switch
-              checked={settings.openTeamInBrowser}
-              onChange={event => settings.setOpenTeamInBrowser(event.target.checked)}
-            />
-          }
+      <Paper elevation={0} sx={{margin: "16px"}}>
+        <BooleanSwitch 
+          label="Render links in event description"
+          checked={settings.renderLinksInDescription}
+          setChecked={settings.setRenderLinksInDescription}
         />
-      </FormGroup>
-  
-      <h1>Pick Calendar</h1>
-      { errorMessage && (<Alert severity="error">{errorMessage}</Alert>) }
-      <List>
-        {calendars.map((calendar, _) => (
-          <ListItemButton
-            key={calendar.id}
-            onClick={() => settings.setCalendarId(calendar.id)}
-            selected={calendar.id === settings.calendarId}
-          >
-            <ListItemText primary={calendar.summary} secondary={calendar.description}/>
-          </ListItemButton>
-        ))}
-      </List>
+        <BooleanSwitch 
+          label="Open Microsoft Teams meetings in browser"
+          checked={settings.openTeamInBrowser}
+          setChecked={settings.setOpenTeamInBrowser}
+        />
+    
+        <h1>Pick Calendar</h1>
+        { errorMessage && (<Alert severity="error">{errorMessage}</Alert>) }
+        <List>
+          {calendars.map((calendar, _) => (
+            <ListItemButton
+              key={calendar.id}
+              onClick={() => settings.setCalendarId(calendar.id)}
+              selected={calendar.id === settings.calendarId}
+            >
+              <ListItemText primary={calendar.summary} secondary={calendar.description}/>
+            </ListItemButton>
+          ))}
+        </List>
+      </Paper>
     </>
   );
 }
