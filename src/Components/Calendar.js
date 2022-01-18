@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { CalendarItem } from './CalendarItem';
 import { Alert, Grid } from '@mui/material';
 import { ManualJoin } from './ManualJoin';
+import { SettingsContext } from '../settingsContext';
 
 const teamsLinkRegExp = new RegExp('https://teams.microsoft.com/l/meetup-join/[^>]+')
 
@@ -23,10 +24,11 @@ const processItem = item => {
 }
 
 
-export function Calendar({ gapi, refreshRate = 60, calendarId, openTeamInBrowser = true }) {
+export function Calendar({ gapi, refreshRate = 60 }) {
   const [items, setItems] = useState()
   const [now, setNow] = useState()
   const [errorMessage, setErrorMessage] = useState(null)
+  const settings = useContext(SettingsContext)
 
 
   const timerID = useRef(null)
@@ -50,7 +52,7 @@ export function Calendar({ gapi, refreshRate = 60, calendarId, openTeamInBrowser
 
       try {
         const response = await gapi.client.calendar.events.list({
-          calendarId: calendarId,
+          calendarId: settings.calendarId,
           singleEvents: true,
           orderBy: 'startTime',
           timeMin: timeMin.toISOString(),
@@ -79,7 +81,7 @@ export function Calendar({ gapi, refreshRate = 60, calendarId, openTeamInBrowser
       console.log('Stop timer')
       clearTimeout(timerID.current)
     }
-  }, [calendarId, gapi, refreshRate, timerID,
+  }, [settings.calendarId, gapi, refreshRate, timerID,
       setErrorMessage, setItems, setNow]);
 
   if (!items) return null;
@@ -96,7 +98,7 @@ export function Calendar({ gapi, refreshRate = 60, calendarId, openTeamInBrowser
             <CalendarItem
               key={index}
               now={now}
-              openTeamInBrowser={openTeamInBrowser}
+              openTeamInBrowser={settings.openTeamInBrowser}
               {...item}
             />
           )}

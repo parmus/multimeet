@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Alert, FormControlLabel, FormGroup, List, ListItemButton, ListItemText, Switch } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ArrowBack from '@mui/icons-material/ArrowBack';
+import { SettingsContext } from '../settingsContext';
 
 import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 
 
-export const SettingsPage = ({ gapi, openTeamInBrowser, setOpenTeamInBrowser, calendarId, setCalendarId }) => {
+export const SettingsPage = ({ gapi }) => {
   const navigate = useNavigate();
 
   const [calendars, setCalendars] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
+  const settings = useContext(SettingsContext)
   
   useEffect(() => {
     if (!gapi) return;
@@ -56,8 +58,8 @@ export const SettingsPage = ({ gapi, openTeamInBrowser, setOpenTeamInBrowser, ca
           label="Open Microsoft Teams meetings in browser"
           control={
             <Switch
-              checked={openTeamInBrowser}
-              onChange={event => setOpenTeamInBrowser(event.target.checked)}
+              checked={settings.openTeamInBrowser}
+              onChange={event => settings.setOpenTeamInBrowser(event.target.checked)}
             />
           }
         />
@@ -69,8 +71,8 @@ export const SettingsPage = ({ gapi, openTeamInBrowser, setOpenTeamInBrowser, ca
         {calendars.map((calendar, _) => (
           <ListItemButton
             key={calendar.id}
-            onClick={() => setCalendarId(calendar.id)}
-            selected={calendar.id === calendarId}
+            onClick={() => settings.setCalendarId(calendar.id)}
+            selected={calendar.id === settings.calendarId}
           >
             <ListItemText primary={calendar.summary} secondary={calendar.description}/>
           </ListItemButton>

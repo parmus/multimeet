@@ -7,6 +7,7 @@ import { clientId } from './settings';
 import { CssBaseline, GlobalStyles, ThemeProvider } from '@mui/material';
 import { theme, globalCss } from "./theme"
 import { HashRouter } from 'react-router-dom';
+import { SettingsContextProvider } from './settingsContext';
 
 
 ReactDOM.render(
@@ -15,9 +16,11 @@ ReactDOM.render(
     <GlobalStyles styles={globalCss}/>
     <ThemeProvider theme={theme}>
       <GoogleApiProvider clientId={clientId}>
-        <HashRouter>
-          <App />
-        </HashRouter>
+        <SettingsContextProvider>
+          <HashRouter>
+            <App />
+          </HashRouter>
+        </SettingsContextProvider>
       </GoogleApiProvider>
     </ThemeProvider>
   </React.StrictMode>,

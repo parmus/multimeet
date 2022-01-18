@@ -1,14 +1,13 @@
 import { discoveryDocs, scopes } from './settings'
 import { useGoogleApi } from 'react-gapi'
-import { useEffect, useState } from 'react';
-import { useLocalStorage, useLocalStorageBool } from './utils';
+import { useEffect, useState, useContext } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import { CalendarPage } from './Pages/CalendarPage';
 import { LoginPage } from './Pages/LoginPage';
 import { SettingsPage } from './Pages/SettingsPage';
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage';
-
+import { SettingsContext } from './settingsContext';
 
 const RequireAuth = ({ isSignedIn, children }) => {
   const navigate = useNavigate();
@@ -34,8 +33,7 @@ export const App = () => {
   })
 
   const [title, setTitle] = useState('')
-  const [calendarId, setCalendarId] = useLocalStorage('calendarId', 'primary')
-  const [openTeamInBrowser, setOpenTeamInBrowser] = useLocalStorageBool('openTeamInBrowser', true)
+  const settings = useContext(SettingsContext)
   const auth = gapi?.auth2.getAuthInstance()
   const isSignedIn = auth?.isSignedIn.get()
 
@@ -45,12 +43,12 @@ export const App = () => {
       setTitle('')
       return
     }
-    if (!calendarId) return
+    if (!settings.calendarId) return
 
     (async () => {
       try {
         const response = await gapi.client.calendar.calendars.get({
-          calendarId: calendarId,
+          calendarId: settings.calendarId,
         });
         setTitle(response.result.summary);
       } catch (error) {
@@ -58,7 +56,7 @@ export const App = () => {
         console.log(error);
       }
     })();
-  }, [gapi, calendarId, setTitle, isSignedIn])
+  }, [gapi, settings.calendarId, setTitle, isSignedIn])
 
   if (!auth) return null;
 
@@ -71,8 +69,6 @@ export const App = () => {
             gapi={gapi}
             auth={auth}
             title={title}
-            calendarId={calendarId}
-            openTeamInBrowser={openTeamInBrowser}
           />
         </RequireAuth>
       }/>
@@ -80,10 +76,6 @@ export const App = () => {
         <RequireAuth isSignedIn={isSignedIn}>
           <SettingsPage
             gapi={gapi}
-            openTeamInBrowser={openTeamInBrowser}
-            setOpenTeamInBrowser={setOpenTeamInBrowser}
-            calendarId={calendarId}
-            setCalendarId={setCalendarId}
           />
         </RequireAuth>
       }/>
