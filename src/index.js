@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { GoogleApiProvider } from 'react-gapi'
-import { clientId } from './settings';
 import { CssBaseline, GlobalStyles, ThemeProvider } from '@mui/material';
 import { theme, globalCss } from "./theme"
 import { HashRouter } from 'react-router-dom';
 import { SettingsContextProvider } from './settingsContext';
+
+
+const clientId = window.clientId || process.env.REACT_APP_CLIENTID;
 
 
 ReactDOM.render(

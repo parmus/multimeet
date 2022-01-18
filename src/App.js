@@ -1,4 +1,3 @@
-import { discoveryDocs, scopes } from './settings'
 import { useGoogleApi } from 'react-gapi'
 import { useEffect, useState, useContext } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { LoginPage } from './Pages/LoginPage';
 import { SettingsPage } from './Pages/SettingsPage';
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage';
 import { SettingsContext } from './settingsContext';
+
 
 const RequireAuth = ({ isSignedIn, children }) => {
   const navigate = useNavigate();
@@ -28,8 +28,11 @@ const RequireAuth = ({ isSignedIn, children }) => {
 
 export const App = () => {
   const gapi = useGoogleApi({
-    discoveryDocs: discoveryDocs,
-    scopes: scopes,
+    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+    scopes: [
+      'profile',
+      'https://www.googleapis.com/auth/calendar.readonly',
+    ],
   })
 
   const [title, setTitle] = useState('')
