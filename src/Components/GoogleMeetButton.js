@@ -4,6 +4,8 @@ import { GoogleMeetIcon } from "../Icons/Icons";
 export const GoogleMeetButton = ({ href, ...props }) => (
   <Button
     target="_blank"
+    href={href}
+    rel="noreferrer"
     variant="outlined"
     size="large"
     {...props}
