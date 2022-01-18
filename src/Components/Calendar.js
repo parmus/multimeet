@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState, useContext, useCallback } from 'react';
 import { CalendarItem } from './CalendarItem';
 import { Alert, Grid } from '@mui/material';
 import { ManualJoin } from './ManualJoin';
@@ -23,15 +23,27 @@ const processItem = item => {
   return item
 }
 
+const findCurrentEvent = (items, now) => {
+  if (items.length < 1) return;
+
+  const onGoingEvent = items.slice().reverse().find(item => !item.allDay && item.start <= now && item.end >= now);
+  if (onGoingEvent) return onGoingEvent;
+
+  const nextUpcomingEvent = items.find(item => !item.allDay && item.start >= now);
+  if (nextUpcomingEvent) return nextUpcomingEvent;
+
+  return items[items.length - 1];
+}
 
 export function Calendar({ gapi, refreshRate = 60 }) {
   const [items, setItems] = useState()
   const [now, setNow] = useState()
   const [errorMessage, setErrorMessage] = useState(null)
   const settings = useContext(SettingsContext)
-
-
   const timerID = useRef(null)
+  const currentEventRef = useCallback(node => {
+    if (node !== null) node.scrollIntoView({behavior: "smooth", block: "center"});
+  }, []);
 
   useEffect(() => {
     if (!gapi) return
@@ -86,6 +98,9 @@ export function Calendar({ gapi, refreshRate = 60 }) {
       setErrorMessage, setItems, setNow]);
 
   if (!items) return null;
+
+  const currentEvent = findCurrentEvent(items, now);
+
   return (
     <>
       { errorMessage && (<Alert severity="error">{errorMessage}</Alert>) }
@@ -97,9 +112,10 @@ export function Calendar({ gapi, refreshRate = 60 }) {
           {items.map((item, index) =>
             <CalendarItem
               key={index}
+              ref={item === currentEvent ? currentEventRef : undefined}
+              item={item}
               now={now}
               openTeamInBrowser={settings.openTeamInBrowser}
-              item={item}
             />
           )}
         </Grid>

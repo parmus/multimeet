@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, forwardRef } from "react"
 import { Card, Collapse } from "@mui/material"
 import { CardContent } from "@mui/material"
 import { CardActions } from "@mui/material"
@@ -11,7 +11,7 @@ import { ExpandMoreButton } from "./ExpandMoreButton"
 const formatTime = datetime => datetime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
 
 
-export const CalendarItem = ({
+export const CalendarItem = forwardRef(({
   now,
   openTeamInBrowser,
   item: {
@@ -24,7 +24,7 @@ export const CalendarItem = ({
     hangoutLink,
     teamsLink, 
   }
-}) => {
+}, ref) => {
   const [expanded, setExpanded] = useState(false)
 
   const cls = now < start ? 'future' : (now < end ? 'ongoing' : 'past')
@@ -42,7 +42,7 @@ export const CalendarItem = ({
   const duration = allDay ? (<i>All day</i>) : `${formatTime(start)} - ${formatTime(end)}`
 
   return (
-    <Card sx={ sx } raised={!allDay && cls === 'ongoing'}>
+    <Card ref={ref} sx={ sx } raised={!allDay && cls === 'ongoing'}>
       <CardContent>
         <Typography variant="h5" component="div">
           {summary}
@@ -70,5 +70,5 @@ export const CalendarItem = ({
       </CardActions>
     </Card>
   )
-}
+});
 
