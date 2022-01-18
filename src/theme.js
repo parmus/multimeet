@@ -13,7 +13,7 @@ export const theme = createTheme({
     }
   },
   typography: {
-    //fontSize: 16,
+  fontSize: 16,
   }
 })
 

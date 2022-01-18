@@ -39,9 +39,10 @@ export function Calendar({ gapi, refreshRate = 60 }) {
     clearTimeout(timerID.current)
 
     const refresh = async() => {
-      setNow(new Date())
+      const now = new Date();
+      setNow(now)
 
-      const timeMin = new Date()
+      const timeMin = new Date(now)
       timeMin.setHours(0)
       timeMin.setMinutes(0)
       timeMin.setSeconds(0)
@@ -85,7 +86,6 @@ export function Calendar({ gapi, refreshRate = 60 }) {
       setErrorMessage, setItems, setNow]);
 
   if (!items) return null;
-
   return (
     <>
       { errorMessage && (<Alert severity="error">{errorMessage}</Alert>) }

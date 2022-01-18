@@ -11,7 +11,6 @@ Simple drop-in replacement for https://meet.google.com/ for meeting rooms
 
 ## TODO
 - [ ] Show event creator / calendar
-- [ ] Show description?
 - [ ] Scroll to current
 - [ ] Documentation
 - [ ] Check out https://github.com/narinluangrath/react-gapi-auth2
