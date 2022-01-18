@@ -11,7 +11,20 @@ import { ExpandMoreButton } from "./ExpandMoreButton"
 const formatTime = datetime => datetime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
 
 
-export const CalendarItem = ({ now, start, end, allDay, responseStatus, summary, hangoutLink, teamsLink, openTeamInBrowser, description }) => {
+export const CalendarItem = ({
+  now,
+  openTeamInBrowser,
+  item: {
+    start,
+    end,
+    allDay,    
+    summary,
+    description,
+    responseStatus,
+    hangoutLink,
+    teamsLink, 
+  }
+}) => {
   const [expanded, setExpanded] = useState(false)
 
   const cls = now < start ? 'future' : (now < end ? 'ongoing' : 'past')

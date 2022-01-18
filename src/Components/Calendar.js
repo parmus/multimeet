@@ -99,7 +99,7 @@ export function Calendar({ gapi, refreshRate = 60 }) {
               key={index}
               now={now}
               openTeamInBrowser={settings.openTeamInBrowser}
-              {...item}
+              item={item}
             />
           )}
         </Grid>
