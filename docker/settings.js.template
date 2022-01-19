@@ -1,1 +1,1 @@
-window.clientId = "${REACT_APP_CLIENTID}";
+window.clientId = "${GOOGLE_OAUTH2_CLIENT_ID}";
