@@ -9,6 +9,30 @@ Simple drop-in replacement for https://meet.google.com/ for meeting rooms
 - Configurable whether to open Microsoft Teams links in browser or Microsoft Teams application
 
 
+## Installation
+
+### Usage Helm chart
+
+[Helm](https://helm.sh) must be installed to use the charts.  Please refer to
+Helm's [documentation](https://helm.sh/docs) to get started.
+
+Once Helm has been set up correctly, add the repo as follows:
+
+  helm repo add multimeet https://parmus.github.io/multimeet
+
+If you had already added this repo earlier, run `helm repo update` to retrieve
+the latest versions of the packages.  You can then run `helm search repo
+multimeet` to see the charts.
+
+To install the multimeet chart:
+
+    helm install multimeet multimeet/multimeet
+
+To uninstall the chart:
+
+    helm delete multimeet
+
+
 ## TODO
 - [ ] Show event creator / calendar
 - [ ] Documentation
