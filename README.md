@@ -32,12 +32,6 @@ To uninstall the chart:
 
     helm delete multimeet
 
-
-## TODO
-- [ ] Show event creator / calendar
-- [ ] Documentation
-- [ ] Check out https://github.com/narinluangrath/react-gapi-auth2
-
 ## External resources
 https://icon-icons.com/icon/videoconference-remote-work-communication-meeting-online/156845
 https://developers.google.com/identity/branding-guidelines
