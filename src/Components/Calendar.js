@@ -85,7 +85,7 @@ export function Calendar({ gapi, refreshRate = 60 }) {
             setErrorMessage("Calendar not found")
             break;
         }
-        console.error(response.result);
+        console.error(response);
       }
     }
     refresh()
