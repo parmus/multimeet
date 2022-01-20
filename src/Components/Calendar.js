@@ -7,21 +7,26 @@ import { SettingsContext } from '../settingsContext';
 const teamsLinkRegExp = new RegExp('https://teams.microsoft.com/l/meetup-join/[^>]+')
 
 const processItem = item => {
-  item.allDay = item.start.date !== undefined
-  item.start = new Date(item.start.dateTime || item.start.date)
-  item.end = new Date(item.end.dateTime || item.end.date)
+  try {
+    item.allDay = item.start.date !== undefined
+    item.start = new Date(item.start.dateTime || item.start.date)
+    item.end = new Date(item.end.dateTime || item.end.date)
 
-  if (item.description) {
-    item.description = item.description.trim()
-    const linkMatch = item.description.match(teamsLinkRegExp)
-    if (linkMatch) {
-      item.teamsLink = linkMatch[0]
+    if (item.description) {
+      item.description = item.description.trim()
+      const linkMatch = item.description.match(teamsLinkRegExp)
+      if (linkMatch) {
+        item.teamsLink = linkMatch[0]
+      }
     }
+
+    item.responseStatus = item.attendees.reduce((responseStatus, attendee) => attendee.self ? attendee.responseStatus : responseStatus)
+
+    return item
+  } catch (error) {
+    error.item = item
+    throw error
   }
-
-  item.responseStatus = item.attendees.reduce((responseStatus, attendee) => attendee.self ? attendee.responseStatus : responseStatus)
-
-  return item
 }
 
 const findCurrentEvent = (items, now) => {
@@ -74,18 +79,32 @@ export function Calendar({ gapi, refreshRate = 60 }) {
         })
         setErrorMessage(null);
         setItems(response.result.items.map(processItem))
-      } catch (response) {
+      } catch (error) {
         setItems([])
-        switch(response.status) {
+        if (error.item) {
+          // Exception thrown during processing of a calendar item
+          console.error("Error while processing calendar item: %O\n\nItem:\n%s", error, JSON.stringify(error.item, undefined, 2))
+          setErrorMessage("Error while processing calendar item. See console for details.")
+          return
+        }
+
+        switch(error.status) {
+          case undefined:
+            // This is not an API error. Let's just log what it is
+            console.error(error);
+            break;
+
           default:
           case 400:
+            console.error("Unable to load calendar: %O", error.result);
             setErrorMessage("Unable to load calendar")
             break;
+
           case 404:
+            console.error("Calendar not found: %O", error.result);
             setErrorMessage("Calendar not found")
             break;
         }
-        console.error(response);
       }
     }
     refresh()
