@@ -1,5 +1,5 @@
 # MultiMeet
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=flat&logo=react&logoColor=%2361DAFB)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/parmus/multimeet/build-and-push-docker-image)](https://github.com/parmus/multimeet/actions/workflows/build-and-push-docker-image.yaml)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/e13c5563-a834-4b7c-9d69-ec36243cca9f/deploy-status)](https://app.netlify.com/sites/multimeet/deploys)
