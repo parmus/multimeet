@@ -20,8 +20,6 @@ const processItem = item => {
       }
     }
 
-    item.responseStatus = item.attendees.reduce((responseStatus, attendee) => attendee.self ? attendee.responseStatus : responseStatus)
-
     return item
   } catch (error) {
     error.item = item

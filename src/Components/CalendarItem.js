@@ -23,7 +23,6 @@ export const CalendarItem = forwardRef(({
     allDay,    
     summary,
     description,
-    responseStatus,
     hangoutLink,
     teamsLink, 
   }
@@ -37,10 +36,6 @@ export const CalendarItem = forwardRef(({
 
   if (cls === 'past') {
     sx.opacity = "0.3"
-  }
-
-  if (responseStatus === 'declined') {
-    sx.textDecoration = 'line-through'
   }
 
   if (settings.renderLinksInDescription && description) {
