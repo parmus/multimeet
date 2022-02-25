@@ -16,12 +16,18 @@ export const  ManualJoin = () => {
           value={meetID}
           onChange={event => setMeetID(event.target.value.trim())}
           onKeyPress={e => {
+            if (meetID === "") return;
             if (e.key === "Enter") {
-              window.open(meetingURL)
+              window.open(meetingURL, '_blank', ['noopener', 'noreferrer']);
+              setMeetID("");
             }
           }}
           placeholder="Enter Meet ID" />
-        <GoogleMeetButton disabled={meetID === ""} href={meetingURL}/>
+        <GoogleMeetButton
+          disabled={meetID === ""}
+          onClick={() => setMeetID("")}
+          href={meetingURL}
+        />
       </Stack>
       </CardContent>
     </Card>
