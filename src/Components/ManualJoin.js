@@ -4,6 +4,7 @@ import { GoogleMeetButton } from './GoogleMeetButton';
 
 export const  ManualJoin = () => {
   const [meetID, setMeetID] = useState('');
+  const meetingURL = `https://meet.google.com/${meetID}`;
 
   return (
     <Card variant="outlined">
@@ -14,8 +15,13 @@ export const  ManualJoin = () => {
           variant="outlined"
           value={meetID}
           onChange={event => setMeetID(event.target.value.trim())}
+          onKeyPress={e => {
+            if (e.key === "Enter") {
+              window.open(meetingURL)
+            }
+          }}
           placeholder="Enter Meet ID" />
-        <GoogleMeetButton disabled={meetID === ""} href={`https://meet.google.com/${meetID}`} />
+        <GoogleMeetButton disabled={meetID === ""} href={meetingURL}/>
       </Stack>
       </CardContent>
     </Card>
