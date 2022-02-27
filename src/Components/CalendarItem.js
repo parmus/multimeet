@@ -18,6 +18,7 @@ export const CalendarItem = forwardRef(({
   now,
   openTeamInBrowser,
   item: {
+    attendees,
     start,
     end,
     allDay,    
@@ -29,6 +30,8 @@ export const CalendarItem = forwardRef(({
 }, ref) => {
   const [expanded, setExpanded] = useState(false)
   const settings = useContext(SettingsContext)
+
+  if (settings.hideDeclined && attendees.some(a => a.self && a.responseStatus === "declined")) return null;
 
   const cls = now < start ? 'future' : (now < end ? 'ongoing' : 'past')
 

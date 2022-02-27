@@ -74,6 +74,11 @@ export const SettingsPage = ({ gapi }) => {
           setChecked={settings.setRenderLinksInDescription}
         />
         <BooleanSwitch 
+          label="Hide declined events"
+          checked={settings.hideDeclined}
+          setChecked={settings.setHideDeclined}
+        />
+        <BooleanSwitch 
           label="Open Microsoft Teams meetings in browser"
           checked={settings.openTeamInBrowser}
           setChecked={settings.setOpenTeamInBrowser}
