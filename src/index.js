@@ -7,13 +7,16 @@ import { CssBaseline, GlobalStyles, ThemeProvider } from '@mui/material';
 import { theme, globalCss } from "./theme"
 import { HashRouter } from 'react-router-dom';
 import { SettingsContextProvider } from './settingsContext';
-
+import "github-fork-ribbon-css/gh-fork-ribbon.css"
 
 const clientId = window.clientId || process.env.REACT_APP_CLIENTID;
 
 
 ReactDOM.render(
   <React.StrictMode>
+    {process.env.REACT_APP_GITHUB_LINK === "enabled" && (
+      <a className="github-fork-ribbon" href="https://github.com/parmus/multimeet" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+    )}    
     <CssBaseline/>
     <GlobalStyles styles={globalCss}/>
     <ThemeProvider theme={theme}>
