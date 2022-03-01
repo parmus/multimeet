@@ -98,6 +98,17 @@ export function Calendar({ gapi, refreshRate = 60 }) {
             setErrorMessage("Unable to load calendar")
             break;
 
+          case 401:
+            if (error.result.error.errors[0].reason === 'authError') {
+              console.log('Unabled to load calendar due to authentication error. Logging out.')
+              const auth = gapi?.auth2.getAuthInstance()
+              auth.signOut()
+            } else {
+              console.error("Unable to load calendar: %O", error.result);
+              setErrorMessage("Unable to load calendar")
+            }
+            break;
+
           case 404:
             console.error("Calendar not found: %O", error.result);
             setErrorMessage("Calendar not found")
