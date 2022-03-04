@@ -14,8 +14,14 @@ const clientId = window.clientId || process.env.REACT_APP_CLIENTID;
 
 ReactDOM.render(
   <React.StrictMode>
-    {process.env.REACT_APP_GITHUB_LINK === "enabled" && (
-      <a className="github-fork-ribbon" href="https://github.com/parmus/multimeet" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+    {process.env.REACT_APP_GITHUB_RIBBON === "enabled" && (
+      <a
+        className="github-fork-ribbon"
+        href="https://github.com/parmus/multimeet"
+        data-ribbon="Fork me on GitHub"
+        title="Fork me on GitHub"
+        style={{ position: "fixed" }}
+      >Fork me on GitHub</a>
     )}    
     <CssBaseline/>
     <GlobalStyles styles={globalCss}/>
