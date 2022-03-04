@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import GoogleSignInButtonNormal from '../Icons/google_signin_buttons/2x/btn_google_signin_dark_normal_web@2x.png';
 import GoogleSignInButtonFocus from '../Icons/google_signin_buttons/2x/btn_google_signin_dark_focus_web@2x.png';
 import GoogleSignInButtonPressed from '../Icons/google_signin_buttons/2x/btn_google_signin_dark_pressed_web@2x.png';
+import { ExternalLink } from '../utils';
+
 
 export const LoginPage = ({ auth }) => {
   const navigate = useNavigate();
@@ -39,7 +41,13 @@ export const LoginPage = ({ auth }) => {
     >
       <Typography variant="h1">MultiMeet</Typography>
       <Button onClick={() => auth.signIn()} color="inherit" sx={style}/>
-      <Box>
+      <Box sx={{
+        "& a:not(:last-child)::after": {
+          "content": "\" | \""
+        }
+      }}>
+        <ExternalLink href="https://github.com/parmus/multimeet">About MultiMeet</ExternalLink>
+        <Link to='/tos'>Terms of Service</Link>
         <Link to='/privacy'>Privacy Policy</Link>
       </Box>
     </Grid>

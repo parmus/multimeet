@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import PrivacyTipOutlinedIcon from '@mui/icons-material/PrivacyTipOutlined';
+import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
+
 
 export const HeaderBar = ({ auth, title="" }) => {
   const navigate = useNavigate();
@@ -14,6 +16,8 @@ export const HeaderBar = ({ auth, title="" }) => {
     setAnchorEl(null)
     auth.signOut()
   }
+
+  const profile = auth.currentUser.get().getBasicProfile()
 
   return (
     <AppBar position="sticky">
@@ -27,7 +31,7 @@ export const HeaderBar = ({ auth, title="" }) => {
               onClick={event => setAnchorEl(event.currentTarget)}
               color="inherit"
             >
-              <Avatar alt="Remy Sharp" src={auth.currentUser.get().getBasicProfile().getImageUrl()} />
+              <Avatar alt={profile.getName()} src={profile.getImageUrl()} />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -51,6 +55,12 @@ export const HeaderBar = ({ auth, title="" }) => {
                 Settings
               </MenuItem>
               <Divider/>
+              <MenuItem onClick={() => navigate('/tos')}>
+                <ListItemIcon>
+                  <GavelOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                Terms of Service
+              </MenuItem>
               <MenuItem onClick={() => navigate('/privacy')}>
                 <ListItemIcon>
                   <PrivacyTipOutlinedIcon fontSize="small" />

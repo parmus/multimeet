@@ -7,6 +7,7 @@ import { LoginPage } from './Pages/LoginPage';
 import { SettingsPage } from './Pages/SettingsPage';
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage';
 import { SettingsContext } from './settingsContext';
+import { TermsOfServicePage } from './Pages/TermsOfServicePage';
 
 
 const RequireAuth = ({ isSignedIn, children }) => {
@@ -83,6 +84,7 @@ export const App = () => {
         </RequireAuth>
       }/>
       <Route path="privacy" element={<PrivacyPolicyPage/>}/>
+      <Route path="tos" element={<TermsOfServicePage/>}/>
     </Routes>
   );
 }

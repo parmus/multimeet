@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+
 export const useLocalStorage = (key, defautValue = "") => {
   const [value, setItem] = useState(() => {
     const savedValue = localStorage.getItem(key)
@@ -33,4 +34,13 @@ export const useLocalStorageBool = (key, defautValue = true) => {
   const serialize = bool => bool ? '1' : '0'
   const deserialize = str => str !== '0'
   return useLocalStorageCustom(key, defautValue, serialize, deserialize)
+}
+
+
+export const ExternalLink = ({ href, children }) => {
+  if (!children) children = href
+
+  return (
+    <a href={href} target="_blank" rel="noreferrer">{children}</a>
+  )
 }
