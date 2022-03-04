@@ -11,6 +11,10 @@ Simple drop-in replacement for https://meet.google.com/ for meeting rooms
 - Detects and shows Microsoft Teams links in invites
 - Configurable whether to open Microsoft Teams links in browser or Microsoft Teams application
 
+## Usage
+MultiMeet is publicly hosted at https://multimeet.parmus.dk for anyone to use
+
+Alternatively, you're also free to host MultiMeet yourself.
 
 ## Installation
 
